@@ -16,9 +16,10 @@ class AdminCheck
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(isset(Auth::user()->is_admin) && Auth::user()->is_admin == 1)
+        if (isset(Auth::user()->is_admin) && Auth::user()->is_admin == 1) {
             return $next($request);
-        else
-            return route('home');
+        } else {
+            return redirect()->route('home');
+        }
     }
 }

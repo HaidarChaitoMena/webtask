@@ -8,7 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Certificates extends Model
 {
     use HasFactory;
+
     protected $table = 'certificates';
+    protected $casts = [
+        'created_at' => 'date:m-d-Y',
+    ];
+    protected $fillable = [
+        'title',
+    ];
+    
 
     public function users()
     {

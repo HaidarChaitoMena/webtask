@@ -28,8 +28,15 @@ class DatabaseSeeder extends Seeder
             'approved' => 1,
             'is_admin' => 1,
         ]);
-        \App\Models\User::factory(10)->create();
-        Certificates::factory(10)->create();
+        User::factory(10)->create();
+
+        $certificates = ['MS', 'BS', 'PHD'];
+        foreach ($certificates as $certificate) {
+            Certificates::factory(1)->create([
+                'title' => $certificate
+            ]);
+        }
+
 
         $faker = Factory::create();
 
@@ -39,8 +46,12 @@ class DatabaseSeeder extends Seeder
 
         // Loop through each user and assign random certificates
         foreach ($users as $user) {
-            $randomCertificates = $faker->randomElements($certificates, $faker->numberBetween(1, count($certificates)));
-            $user->certificates()->attach($randomCertificates);
+            $randomCertificates = $faker->randomElements(
+                $certificates,
+                3
+            );
+            $randomCertificate = array_pop($randomCertificates);
+            $user->certificates()->attach($randomCertificate->id);
         }
     }
 }

@@ -15,18 +15,18 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
-    public function addCertificate(User $user, Certificates $certificate): User
+    public function addCertificate(User $user, Certificates $certificate): array
     {
         $user->certificates()->attach($certificate->id);
         $user->save();
-        return $user;
+        return ['user' => $user, 'certificates' => $user->certificates()->get()];
     }
 
-    public function removeCertificate(User $user, Certificates $certificate): User
+    public function removeCertificate(User $user, Certificates $certificate): array
     {
         $user->certificates()->detach($certificate->id);
         $user->save();
-        return $user;
+        return ['user' => $user, 'certificates' => $user->certificates()->get()];
     }
 
     /**
@@ -37,6 +37,7 @@ class ProfileController extends Controller
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
+            'certificates' => Certificates::all()
         ]);
     }
 
